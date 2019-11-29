@@ -1,0 +1,57 @@
+<html>
+
+<!DOCTYPE html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="format-detection" content="telephone=no"/>
+		<meta name = "viewport" content = "width = device-width"/>
+		<meta name = "viewport" content = "height = device-height"/>
+
+<meta name = "viewport" content = "initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
+
+		
+		<title>
+This is my First App Mobile App for phonegap			
+		</title>
+<script src="js/zepto.js"></script>
+
+		
+<script>
+	function displaymsg(){
+		
+		//var disp1=document.getElementById("disp1");
+		//disp1.innerHTML=disp1.innerHTML  + "<br/>Good Morning";
+		$("#disp1").prepend(Date() + "<br/>")
+		
+	}
+	function clearMsg(){
+//		var disp1=document.getElementById("disp1");
+	//	disp1.innerHTML="";
+		$("#disp1").html('');
+		
+		
+	}
+	
+</script>		
+		
+		
+	</head>
+	
+	<body>
+			
+<button id="#button1" onclick="displaymsg();">
+	Display Message
+</button>
+
+<button id="#button2" onclick="clearMsg();">
+	Clear Message
+</button>
+			
+	<div id="disp1"  >
+		
+		
+	</div>		
+		</body>
+		
+	
+</html>
