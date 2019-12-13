@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6 lt8"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7 lt8"> <![endif]-->
-<!--[if IE 8 ]>    <html lang="en" class="no-js ie8 lt8"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" clas9s="no-js ie8 lt8"> <![endif]-->
 <!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
 <!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
     <head>
@@ -12,10 +12,220 @@
 		<meta name = "viewport" content = "height = device-height"/>
 
 <meta name = "viewport" content = "initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
-        <link rel="shortcut icon" href="../favicon.ico"> 
-        <link rel="stylesheet" type="text/css" href="css/demo.css" />
+        <link rel="shortcut icon" href9="../favicon.ico"> 
+        <link rel="stylesheet" type="t9ext/css" href="css/demo.css" />
         <link rel="stylesheet" type="text/css" href="css/style2.css" />
 		<link rel="stylesheet" type="text/css" href="css/animate-custom.css" />
+		<script src="js/mysql.js"></script>
+		<script src="js/jquery-3.4.1.min.js"></script>
+		
+<script>
+		var lchost="eureka.c0yaxoagyy6q.us-east-1.rds.amazonaws.com";
+		var lcuser="admin";
+		var lcpassword="eureka20";
+		var lcdatabase="eureka";
+		var lcquery="";
+		var window.lcdata="";
+</script>
+		
+<script type="text/javascript">
+
+      function IsEmail(email) {
+        var regex = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        if(!regex.test(email)) {
+           return false;
+        }else{
+           return true;
+        }
+      }
+	  
+	
+	  
+$(document).ready(function() {
+
+//logusername
+//logpassword
+
+  $('#loginformid').submit(function() {
+
+  $('<input>').attr({
+    type: 'hidden',
+    id: 'lcdata',
+    name: 'lcdata',
+    value: ''
+}).appendTo('#loginformid');
+  
+			var lclogusername = $('#logusername').val();
+            if(lclogusername== ''){
+              $('#logusername').next().show();
+              return false;
+
+            }
+
+			var lclogpassword = $('#logpassword').val();
+           if(lclogpassword== ''){
+              $('#logpassword').next().show();
+              return false;
+            }
+
+lcquery="select * from users where ( username =\'" + lclogusername;
+lcquery=lcquery+ "\' or mobileno =\'" + lclogusername + "\' or email =\'";
+lcquery=lcquery + lclogusername +"\') and  userpassword =\'" ;
+lcquery=lcquery +  lclogpassword +"\'";
+
+/*
+ const el = document.createElement('textarea');
+  el.value = lcquery;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+*/
+lcarr="";
+lcdata1="";
+//alert(lchost+lcuser+lcpassword+lcdatabase);
+
+  MySql.Execute(
+        lchost,
+        lcuser, 
+        lcpassword, 
+        lcdatabase, 
+        lcquery, 
+        function (data) {
+		$("#lcdata").val(JSON.stringify(data,null,2));
+
+		
+    });
+
+	//alert(lcdata);
+lcarr=JSON.parse($("#lcdata").val());
+
+jQuery('#lcdata').remove();
+//alert(lcarr.Success);
+	
+if (lcarr.Result[0].username!="")
+{
+alert("Welcome "+lcarr.Result[0].username);
+return true;
+}
+else
+{
+alert(lcarr.Error);
+return false;
+}
+
+	  
+});
+  
+
+  $("#regformid").submit(function() {
+  
+  
+  
+  
+	  var lcusername = $('#usernameid').val();
+           if(lcusername== ''){
+              $('#usernameid').next().show();
+              return false;
+            }
+  
+  
+	  var lcusermobileid = $('#usermobileid').val();
+           if(lcusermobileid== ''){
+              $('#usermobileid').next().show();
+              return false;
+            }
+
+	  var lcemailsignup = $('#emailsignup').val();
+           if(lcemailsignup== ''){
+              $('#emailsignup').next().show();
+              return false;
+            }
+       if(IsEmail(lcemailsignup)==false){
+				alert("Invalid Email Address");
+                return false;
+            }
+
+	  var lcpasswordsignup = $('#passwordsignup').val();
+           if(lcpasswordsignup== ''){
+              $('#passwordsignup').next().show();
+              return false;
+            }
+
+	  var lcpasswordsignup = $('#passwordsignup').val();
+           if(lcpasswordsignup== '' || $('#passwordsignup').val() != $('#passwordsignup_confirm').val() ){
+		   alert("Passwords do not match");
+              $('#passwordsignup').next().show();
+              return false;
+            }
+
+			
+		   var lcuseraddress = $('#useraddress').val();
+           if(lcuseraddress== ''){
+              $('#useraddress').next().show();
+              return false;
+            }
+
+		
+
+
+
+//alert("we are good to insert the record");
+
+lcquery="insert into users(mobileno,email,username,useraddress,userpassword) values(";
+lcquery=lcquery + "\'"+ lcusermobileid + "\',";
+lcquery=lcquery + "\'"+ lcemailsignup + "\',";
+lcquery=lcquery + "\'"+ lcusername + "\',";
+lcquery=lcquery + "\'"+ lcuseraddress + "\',";
+lcquery=lcquery + "\'"+ lcpasswordsignup + "\')";
+//alert(lcquery);
+
+  MySql.Execute(
+        lchost,
+        lcuser, 
+        lcpassword, 
+        lcdatabase, 
+        lcquery, 
+        function (data) {
+		//alert(JSON.stringify(data,null,2));
+		lcdata=JSON.stringify(data,null,2);
+		
+      //  document.getElementById("clr").innerHTML = ;
+    });
+//alert(lcdata);
+lcarr=JSON.parse(lcdata);
+if (lcarr.Success)
+{
+alert("Sign Up is Successful");
+return true;
+}
+else
+{
+alert(lcarr.Error);
+return false;
+}
+
+	  
+	  });
+	  
+	  });
+	  
+	  
+	  
+
+	  
+	  
+  </script>
+  
+		
+		
+<script type="text/javascript">
+		var lchost="eureka.c0yaxoagyy6q.us-east-1.rds.amazonaws.com";
+		var lcuser="admin";
+		var lcpassword="eureka20";
+		var lcdatabase="eureka";
+</script>
+
     </head>
     <body>
         <div class="container">
@@ -26,28 +236,28 @@
             <header>
                           </header>
             <section>				
-                <div id="container_demo" >
+                <div id="" >
                     <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
                     <a class="hiddenanchor" id="toregister"></a>
                     <a class="hiddenanchor" id="tologin"></a>
                     <div id="wrapper">
                         <div id="login" class="animate form">
-                            <form  action="mysuperscript.php" autocomplete="on"> 
+                            <form  action="#" id="loginformid" autocomplete="on"> 
                                 <h1>Log in</h1> 
                                 <p> 
-                                    <label for="username" class="uname" data-icon="u" > Your email or username </label>
-                                    <input id="username" name="username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
+                                    <label for="username" class="uname" data-icon="u" > Your Username or Mobile No or Email </label>
+                                    <input id="logusername" name="username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
                                 </p>
                                 <p> 
                                     <label for="password" class="youpasswd" data-icon="p"> Your password </label>
-                                    <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
+                                    <input id="logpassword" name="password" required="required" type="password" placeholder="eg. X8df!90EO" /> 
                                 </p>
                                 <p class="keeplogin"> 
 									<input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" /> 
 									<label for="loginkeeping">Keep me logged in</label>
 								</p>
                                 <p class="login button"> 
-                                    <input type="submit" value="Login" /> 
+                                    <input type="submit" id="btnlogin" value="Login" /> 
 								</p>
                                 <p class="change_link">
 									Not a member yet ?
@@ -57,16 +267,41 @@
                         </div>
 
                         <div id="register" class="animate form">
-                            <form  action="mysuperscript.php" autocomplete="on"> 
-                                <h1> Sign up </h1> 
+                            <form  action="#" method="post" name="regform" id="regformid" autocomplete="on"> 
+                                <p class="change_link">  
+									Already a member ?
+									<a href="#tologin" class="to_register"> Go and log in </a>
+								</p>
+                                <br/>
+								
+								
+								
+
+								<p>
+								<h1> Sign up </h1> 
+								</p>
                                 <p> 
-                                    <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
-                                    <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="mysuperusername690" />
+                                    <label for="username" class="uname" data-icon="u" > Your Username </label>
+                                    <input id="usernameid" name="username" required="required" type="text" placeholder="myusername or mymail@mail.com"/>
+                                </p>
+ 
+								<p> 
+                                    <label for="usermobile" class="uname" data-icon="u">Your Mobile No</label>
+                                    <input id="usermobileid" name="usermobile" required="required" type="text" placeholder="mysuperusername690" />
                                 </p>
                                 <p> 
                                     <label for="emailsignup" class="youmail" data-icon="e" > Your email</label>
                                     <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com"/> 
                                 </p>
+                                <p> 
+                                    <label for="username" class="uname" data-icon="u">Your Name</label>
+                                    <input id="username" name="username" required="required" type="text" placeholder="mysuperusername690" />
+                                </p>
+                                <p> 
+                                    <label for="useraddress" class="useraddress" data-icon="u">Your Address</label>
+                                    <input id="useraddress" name="useraddress" required="required" type="text" placeholder="mysuperusername690" />
+                                </p>
+
                                 <p> 
                                     <label for="passwordsignup" class="youpasswd" data-icon="p">Your password </label>
                                     <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO"/>
@@ -76,13 +311,9 @@
                                     <input id="passwordsignup_confirm" name="passwordsignup_confirm" required="required" type="password" placeholder="eg. X8df!90EO"/>
                                 </p>
                                 <p class="signin button"> 
-									<input type="submit" value="Sign up"/> 
+									<input type="submit" id="#regbtn" class="regbtn" Onclick="registration1()"  value="Sign up"/> 
 								</p>
-                                <p class="change_link">  
-									Already a member ?
-									<a href="#tologin" class="to_register"> Go and log in </a>
-								</p>
-                            </form>
+								                            </form>
                         </div>
 						
                     </div>
