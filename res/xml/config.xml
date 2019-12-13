@@ -1,0 +1,6 @@
+<platform name="android">
+    <allow-intent href="*" />
+    <access origin="*" />
+    <allow-intent href="*" />
+    <allow-navigation href="*" />
+</platform>
