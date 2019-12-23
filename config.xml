@@ -1,0 +1,30 @@
+
+
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget xmlns   = "http://www.w3.org/ns/widgets"
+    xmlns:gap   = "http://phonegap.com/ns/1.0"
+    id          = "com.eureka.kiranekidukan"
+    versionCode = "10"
+    version     = "1.0.0" >
+
+<!-- versionCode is optional and Android only -->
+
+  <name>Kirane Ki Dukan</name>
+
+  <description>
+      An App to order/purchase groceries from local Grocery Stores
+  </description>
+<icon src="icon.jpg" platform="android" width="180" height="180"/>
+
+  <author href="#" email="siddengg@gmail.com">
+      Eureka Group
+  </author>
+  
+  <platform name="android">
+    <allow-intent href="*" />
+    <access origin="*" />
+    <allow-intent href="*" />
+    <allow-navigation href="*" />
+</platform>
+
+</widget>
